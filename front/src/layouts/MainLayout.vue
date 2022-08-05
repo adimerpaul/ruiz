@@ -38,10 +38,8 @@
       bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Opciones de menu
+        <q-item-label class="bg-grey-9 flex flex-center">
+          <q-img src="logo.png" width="180px"/>
         </q-item-label>
         <q-item clickable exact to="login" v-if="!store.isLoggedIn">
           <q-item-section avatar>
@@ -68,6 +66,15 @@
           <q-item-section>
             <q-item-label>Usuarios</q-item-label>
             <q-item-label caption>Control de usuarios</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable exact to="producer" v-if="store.isLoggedIn">
+          <q-item-section avatar>
+            <q-icon name="o_agriculture" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Productores</q-item-label>
+            <q-item-label caption>Control de productores</q-item-label>
           </q-item-section>
         </q-item>
         <q-item clickable exact @click="logout" v-if="store.isLoggedIn">

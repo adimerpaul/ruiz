@@ -19,10 +19,13 @@ return new class extends Migration
             $table->string('apellidos')->nullable();
             $table->string('ci')->nullable();
             $table->string('edad')->nullable();
-            $table->string('fechanNacimiento')->nullable();
             $table->string('nroFamilia')->nullable();
+            $table->string('masculino')->nullable();
+            $table->string('femenino')->nullable();
             $table->string('varones')->nullable();
             $table->string('mujeres')->nullable();
+            $table->string('celular')->nullable();
+            $table->string('provincia')->nullable();
             $table->string('departamento')->nullable();
             $table->string('municipio')->nullable();
             $table->string('comunidad')->nullable();
@@ -33,6 +36,8 @@ return new class extends Migration
             $table->string('riego')->nullable();
             $table->string('quinua')->nullable();
             $table->string('asociacion')->nullable();
+            $table->string('si')->nullable();
+            $table->string('no')->nullable();
             $table->string('mejorar')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

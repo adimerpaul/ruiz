@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producer;
 use App\Http\Requests\StoreProducerRequest;
 use App\Http\Requests\UpdateProducerRequest;
+use Illuminate\Http\Request;
 
 class ProducerController extends Controller
 {
@@ -13,9 +14,14 @@ class ProducerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->user()->tipo=='ADMINISTRADOR'){
+            $producers = Producer::with('user')->get();
+        } else {
+            $producers = Producer::with('user')->where('user_id', $request->user()->id)->get();
+        }
+        return $producers;
     }
 
     /**
@@ -36,7 +42,7 @@ class ProducerController extends Controller
      */
     public function store(StoreProducerRequest $request)
     {
-        //
+        return Producer::create($request->all());
     }
 
     /**
@@ -70,7 +76,7 @@ class ProducerController extends Controller
      */
     public function update(UpdateProducerRequest $request, Producer $producer)
     {
-        //
+        $producer->update($request->all());
     }
 
     /**
@@ -81,6 +87,6 @@ class ProducerController extends Controller
      */
     public function destroy(Producer $producer)
     {
-        //
+        $producer->delete();
     }
 }

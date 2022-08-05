@@ -41,19 +41,38 @@ class UserController extends Controller
         return response()->json(['token'=>$token,'user'=>User::where('id',$user->id)->with('permisos')->with('unit')->firstOrFail()],200);;
     }
     public function store(Request $request){
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|unique:users',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required|same:password',
+            'tipo' => 'required',
+            'fechaLimite' => 'required',
+        ]);
         $user=new User();
         $user->name=$request->name;
         $user->email=$request->email;
+        $user->tipo=$request->tipo;
         $user->password= Hash::make($request->password) ;
-        $user->fechalimite=$request->fechalimite;
+        $user->fechaLimite=$request->fechaLimite;
         $user->save();
     }
     public function update(Request $request,User $user){
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|unique:users,email,'.$user->id,
+            'tipo' => 'required',
+            'fechaLimite' => 'required',
+        ]);
         $user->update($request->all());
         return $user;
     }
 
     public function updatePassword(Request $request,User $user){
+        $this->validate($request, [
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required|same:password',
+        ]);
         $user->update([
             'password'=>Hash::make($request->password)
         ]);
