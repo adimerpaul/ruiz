@@ -30,6 +30,8 @@ class Producer extends Model
         'quinua',
         'asociacion',
         'mejorar',
+        'fecha',
+        'hora',
         'user_id',
     ];
     public function user()

@@ -39,6 +39,8 @@ return new class extends Migration
             $table->string('si')->nullable();
             $table->string('no')->nullable();
             $table->string('mejorar')->nullable();
+            $table->date('fecha')->nullable();
+            $table->time('hora')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

@@ -23,6 +23,26 @@ class ProducerController extends Controller
         }
         return $producers;
     }
+    public function producerFilter(Request $request)
+    {
+        if ($request->user()->tipo=='ADMINISTRADOR'){
+            if ($request->id==0){
+                $producers = Producer::with('user')
+                    ->whereDate('fecha', '>=', $request->fechaInicio)
+                    ->whereDate('fecha', '<=', $request->fechaFin)
+                    ->get();
+            }else{
+                $producers = Producer::with('user')
+                    ->whereDate('fecha', '>=', $request->fechaInicio)
+                    ->whereDate('fecha', '<=', $request->fechaFin)
+                    ->where('user_id', $request->id)
+                    ->get();
+            }
+        } else {
+            $producers = Producer::with('user')->where('user_id', $request->user()->id)->get();
+        }
+        return $producers;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -42,6 +62,8 @@ class ProducerController extends Controller
      */
     public function store(StoreProducerRequest $request)
     {
+        $request['fecha']=date('Y-m-d');
+        $request['hora']=date('H:i:s');
         return Producer::create($request->all());
     }
 
