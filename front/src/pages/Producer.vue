@@ -332,9 +332,9 @@ export default {
 
       doc.setTextColor(0)
       doc.setFontSize(14)
-      doc.text(producer.nombres, 155, 12,'center');
-      doc.text(producer.apellidos, 155, 25,'center');
-      doc.text(producer.ci, 145, 38,'center');
+      doc.text(producer.nombres==undefined?'':producer.nombres, 155, 12,'center');
+      doc.text(producer.apellidos==undefined?'':producer.apellidos, 155, 25,'center');
+      doc.text(producer.ci==undefined?'':producer.ci, 145, 38,'center');
       doc.text(producer.id+'', 112, 47,'center');
 
       var qrcode = new QRCode(document.getElementById("qr_code"), {
