@@ -39,7 +39,7 @@
     >
       <q-list>
         <q-item-label class="bg-grey-9 flex flex-center">
-          <q-img src="logo.png" width="180px"/>
+          <q-img src="logoimage.png" width="180px"/>
         </q-item-label>
         <q-item clickable exact to="login" v-if="!store.isLoggedIn">
           <q-item-section avatar>
@@ -59,7 +59,7 @@
             <q-item-label caption>Menu principal</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable exact to="user" v-if="store.isLoggedIn">
+        <q-item clickable exact to="user" v-if="store.isLoggedIn && store.user.tipo=='ADMINISTRADOR'" >
           <q-item-section avatar>
             <q-icon name="o_person_add" />
           </q-item-section>
@@ -75,6 +75,15 @@
           <q-item-section>
             <q-item-label>Productores</q-item-label>
             <q-item-label caption>Control de productores</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable exact to="consultas" v-if="store.isLoggedIn&&store.user.tipo=='ADMINISTRADOR'">
+          <q-item-section avatar>
+            <q-icon name="o_print" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Consultas</q-item-label>
+            <q-item-label caption>Consultas de registros</q-item-label>
           </q-item-section>
         </q-item>
         <q-item clickable exact @click="logout" v-if="store.isLoggedIn">

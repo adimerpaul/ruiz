@@ -121,7 +121,7 @@ export default {
     }
   },
   created() {
-    this.getUsers()
+    this.userGet()
   },
   methods: {
     userUpdatePassword(user){
@@ -175,14 +175,14 @@ export default {
         this.loading=true
         this.$api.delete(`user/${user.id}`).then(res => {
           this.loading=false
-          this.getUsers()
+          this.userGet()
         })
       })
     },
     userCreate(){
       this.loading=true
       this.$api.post('user',this.user).then(res => {
-        this.getUsers()
+        this.userGet()
         this.loading=false
         this.user={tipo:'REGISTRADOR',fechaLimite:date.formatDate(new Date(),'YYYY-MM-DD')}
         this.userDialog=false
@@ -200,7 +200,7 @@ export default {
     userUpdate(){
       this.loading=true
       this.$api.put('user/'+this.userU.id,this.userU).then(res => {
-        this.getUsers()
+        this.userGet()
         this.loading=false
         this.userUpdateDialog=false
       }).catch(err=>{
@@ -214,7 +214,7 @@ export default {
         })
       })
     },
-    getUsers() {
+    userGet() {
       this.$api.get('user').then(res => {
         this.users = res.data;
       });

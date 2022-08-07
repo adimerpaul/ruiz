@@ -165,36 +165,36 @@ module.exports = configure(function (ctx) {
 
 
       manifest: {
-        name: `Mi ganancia`,
-        short_name: `Mi ganancia`,
-        description: `Mi ganancia`,
+        name: `CNPQ`,
+        short_name: `CNPQ`,
+        description: `CNPQ`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
-        theme_color: '#650101',
+        theme_color: '#1B5E20',
         icons: [
           {
-            src: 'logo.jpg',
+            src: 'logo.png',
             sizes: '128x128',
             type: 'image/png'
           },
           {
-            src: 'logo.jpg',
+            src: 'logo.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'logo.jpg',
+            src: 'logo.png',
             sizes: '256x256',
             type: 'image/png'
           },
           {
-            src: 'logo.jpg',
+            src: 'logo.png',
             sizes: '384x384',
             type: 'image/png'
           },
           {
-            src: 'logo.jpg',
+            src: 'logo.png',
             sizes: '512x512',
             type: 'image/png'
           }
