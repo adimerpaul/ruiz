@@ -61,7 +61,7 @@ export default {
       this.usersChartData.labels=[]
       res.data.forEach(r => {
         this.usersChartData.datasets[0].data.push(r.cantidad)
-        this.usersChartData.labels.push('Usuario '+r.name.split(" ")[0])
+        this.usersChartData.labels.push('Usuario '+r.name.split(' ')[0])
       });
     })
   }
