@@ -39,7 +39,7 @@
     >
       <q-list>
         <q-item-label class="bg-grey-9 flex flex-center">
-          <q-img src="/logoimage.png" width="180px"/>
+          <q-img src="/logoImage.png" width="180px"/>
         </q-item-label>
         <q-item clickable exact to="login" v-if="!store.isLoggedIn">
           <q-item-section avatar>
