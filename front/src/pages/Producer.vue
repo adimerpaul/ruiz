@@ -121,7 +121,7 @@
           <div class="col-12"><q-input dense outlined v-model="producer.asociacion" label="10 PERTENECE A ALGUNA ASOCIACIÓN?" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.si" label="SI" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.no" label="NO" /></div>
-          <div class="col-12"><q-input dense outlined v-model="producer.mejorar" label="11 COMO CREE QUE PORDRIA MEJORAR SU PRODUCCIÓN" /></div>
+          <div class="col-12"><q-input dense outlined v-model="producer.mejorar" label="11 COMO CREE QUE PODRÍA MEJORAR SU PRODUCCIÓN" /></div>
         </div>
       </q-card-section>
       <q-card-section>
