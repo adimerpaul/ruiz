@@ -77,6 +77,15 @@
             <q-item-label caption>Control de productores</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable exact to="producerSearch" v-if="store.isLoggedIn">
+          <q-item-section avatar>
+            <q-icon name="o_search" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Buscar productor</q-item-label>
+            <q-item-label caption>Control de productores</q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable exact to="consultas" v-if="store.isLoggedIn&&store.user.tipo=='ADMINISTRADOR'">
           <q-item-section avatar>
             <q-icon name="o_print" />

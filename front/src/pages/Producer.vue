@@ -2,7 +2,7 @@
 <q-page>
   <div class="row">
     <div class="col-12">
-      <div class="row" v-if="store.user.tipo=='ADMINISTRADOR'">
+      <div class="row">
         <div class="col-xs-6 col-sm-3 q-pa-xs">
           <q-input dense outlined label="Desde" v-model="fechaInicio" type="date">
             <template v-slot:prepend>
@@ -17,7 +17,7 @@
             </template>
           </q-input>
         </div>
-        <div class="col-xs-12 col-sm-3 q-pa-xs">
+        <div class="col-xs-12 col-sm-3 q-pa-xs"  v-if="store.user.tipo=='ADMINISTRADOR'">
           <q-select dense outlined label="Usuario" v-model="user" :options="users" @filter="filterFn" use-input >
             <template v-slot:no-option>
               <q-item>
@@ -59,11 +59,9 @@
             </div>
           </div>
         </template>
-        <template v-slot:body-cell-tipo="props">
-          <q-td :props="props"><q-badge :color="props.row.tipo=='ADMINISTRADOR'?'red':'green'" :label="props.row.tipo" /></q-td>
-        </template>
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props" auto-width>
+            {{props.row.id }}
             <q-btn-dropdown size="12px" label="Opciones" color="primary" dropdown-icon="more_vert" >
               <q-list>
                 <q-item clickable @click="producerUpdateDialog=true;producerU=props.row">
@@ -83,6 +81,16 @@
                 </q-item>
               </q-list>
             </q-btn-dropdown>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-foto="props">
+          <q-td :props="props" auto-width>
+            <a target="_blank" :href="url+'../imagenes/'+props.row.foto">{{props.row.foto}}</a>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-dato="props">
+          <q-td :props="props" auto-width>
+            <q-btn type="a" outline target="_blank" :href="urlfront+'/producerShow/'+props.row.id" label="Datos" icon="credit_card" size="10px" />
           </q-td>
         </template>
       </q-table>
@@ -122,6 +130,21 @@
           <div class="col-6"><q-input dense outlined v-model="producer.si" label="SI" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.no" label="NO" /></div>
           <div class="col-12"><q-input dense outlined v-model="producer.mejorar" label="11 COMO CREE QUE PODRÍA MEJORAR SU PRODUCCIÓN" /></div>
+          <div class="col-12 text-center flex flex-center">
+            <q-uploader
+              accept=".jpg, .png"
+              @added="uploadFile"
+              auto-upload
+              max-files="1"
+              label="Ingresar imagen para su producto"
+              flat
+              max-file-size="5000000"
+              @rejected="onRejected"
+              bordered
+            />
+            Subiendo {{percentage}}%
+          </div>
+<!--          <div class="col-12"><q-input dense outlined v-model="producer.url" label="URL" /></div>-->
         </div>
       </q-card-section>
       <q-card-section>
@@ -167,7 +190,22 @@
             <div class="col-12"><q-input dense outlined v-model="producerU.asociacion" label="10 PERTENECE A ALGUNA ASOCIACIÓN?" /></div>
             <div class="col-6"><q-input dense outlined v-model="producerU.si" label="SI" /></div>
             <div class="col-6"><q-input dense outlined v-model="producerU.no" label="NO" /></div>
-            <div class="col-12"><q-input dense outlined v-model="producerU.mejorar" label="11 COMO CREE QUE PORDRIA MEJORAR SU PRODUCCIÓN" /></div>
+            <div class="col-12"><q-input dense outlined v-model="producerU.mejorar" label="11 COMO CREE QUE PODRIA MEJORAR SU PRODUCCIÓN" /></div>
+            <div class="col-12 text-center flex flex-center">
+              <q-uploader
+                accept=".jpg, .png"
+                @added="uploadFile2"
+                auto-upload
+                max-files="1"
+                label="Ingresar imagen para su producto"
+                flat
+                max-file-size="5000000"
+                @rejected="onRejected"
+                bordered
+              />
+              Subiendo {{percentage}}%
+            </div>
+<!--            <div class="col-12"><q-input dense outlined v-model="producerU.url" label="URL" /></div>-->
           </div>
         </q-card-section>
         <q-card-section>
@@ -180,8 +218,8 @@
       </q-form>
     </q-card>
   </q-dialog>
-  <div id="qr_code" style="display: none">
-  </div>
+<!--  <div id="qr_code" style="display: none">-->
+<!--  </div>-->
 </q-page>
 </template>
 
@@ -190,6 +228,7 @@ import {date, exportFile, useQuasar} from 'quasar'
 import {jsPDF} from "jspdf";
 import {useCounterStore} from "stores/example-store";
 import $ from 'jquery'
+import QRCode from 'qrcode'
 
 function wrapCsvValue (val, formatFn, row) {
   let formatted = formatFn !== void 0
@@ -214,6 +253,8 @@ export default {
   name: `User`,
   data() {
     return {
+      url:process.env.API,
+      urlfront:process.env.API_FRONT,
       fechaInicio: date.formatDate(new Date(),'YYYY-MM-DD'),
       fechaFin: date.formatDate(new Date(),'YYYY-MM-DD'),
       store:useCounterStore(),
@@ -233,8 +274,10 @@ export default {
         {name:'nombres',field: 'nombres',label: 'nombres',sortable:true},
         {name:'apellidos',field: 'apellidos',label: 'apellidos',sortable:true},
         {name:'ci',field: 'ci',label: 'ci',sortable:true},
+        {name:'dato',field: 'dato',label: 'dato',sortable:true},
+        {name:'foto',field: 'foto',label: 'foto',sortable:true},
         {name:'edad',field: 'edad',label: 'edad',sortable:true},
-        {name:'fechanNacimiento',field: 'fechanNacimiento',label: 'fechanNacimiento',sortable:true},
+        // {name:'fechanNacimiento',field: 'fechanNacimiento',label: 'fechanNacimiento',sortable:true},
         {name:'nroFamilia',field: 'nroFamilia',label: 'nroFamilia',sortable:true},
         {name:'varones',field: 'varones',label: 'varones',sortable:true},
         {name:'mujeres',field: 'mujeres',label: 'mujeres',sortable:true},
@@ -251,8 +294,10 @@ export default {
         {name:'quinua',field: 'quinua',label: 'quinua',sortable:true},
         {name:'asociacion',field: 'asociacion',label: 'asociacion',sortable:true},
         {name:'mejorar',field: 'mejorar',label: 'mejorar',sortable:true},
+        // {name:'url',field: 'url',label: 'url',sortable:true},
         {name:'user_id',field: row=>row.user.name,label: 'user_id',sortable:true},
-      ]
+      ],
+      percentage: 0,
     }
   },
   created() {
@@ -260,6 +305,52 @@ export default {
     this.userGet()
   },
   methods: {
+    uploadFile2 (file) {
+      this.percentage = 0
+      const fd = new FormData()
+      fd.append('file', file[0])
+      this.$api.post('upload', fd, {
+        onUploadProgress: progressEvent => {
+          this.percentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total))
+        }
+      }).then(response => {
+        this.producerU.foto=response.data
+        this.$q.notify({
+          message: 'File uploaded',
+          color: 'positive',
+          icon: 'cloud_done'
+        })
+      }).catch(error => {
+        this.$q.notify({
+          message: 'Error uploading file',
+          color: 'negative',
+          icon: 'cloud_done'
+        })
+      })
+    },
+    uploadFile (file) {
+      this.percentage = 0
+      const fd = new FormData()
+      fd.append('file', file[0])
+      this.$api.post('upload', fd, {
+        onUploadProgress: progressEvent => {
+          this.percentage = parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total))
+        }
+      }).then(response => {
+        this.producer.foto=response.data
+        this.$q.notify({
+          message: 'File uploaded',
+          color: 'positive',
+          icon: 'cloud_done'
+        })
+      }).catch(error => {
+        this.$q.notify({
+          message: 'Error uploading file',
+          color: 'negative',
+          icon: 'cloud_done'
+        })
+      })
+    },
     filterFn (val, update) {
       if (val === '') {
         update(() => {
@@ -312,45 +403,81 @@ export default {
       }
     },
     imprimirCredencial(producer){
-      console.log(producer)
-      var doc = new jsPDF()
-      var img = new Image()
-      img.src = 'img/frontal.png'
-      doc.addImage(img, 'jpg', 5, 5, 100, 55)
-      img.src = 'img/atras.png'
-      doc.setFont('helvetica','bold')
+      // console.log(producer)
+      this.loading=true
+      this.$api.post('base64',{imagen:producer.foto}).then(res=>{
+        this.loading=false
+        this.$q.notify({
+          message: 'Credencial Generada',
+          color: 'positive',
+          icon: 'done'
+        })
+        // this.$q.dialog({
+        //   title: 'Credencial',
+        //   message: `<div style="text-align:center"><img src="${res.data}" style="width:100%"></div>`,
+        //   html: true,
+        //   persistent: true
+        // })
+        var doc = new jsPDF()
+        var img = new Image()
+        img.src = 'img/frontal.png'
+        doc.addImage(img, 'jpg', 5, 5, 100, 55)
+        img.src = 'img/atras.png'
+        doc.setFont('helvetica','bold')
 
-      doc.addImage(img, 'jpg', 105, 5, 100, 55)
+        doc.addImage(img, 'jpg', 105, 5, 100, 55)
 
-      doc.saveGraphicsState();
-      doc.setFillColor(220, 220, 220)
-      doc.setGState(new doc.GState({opacity: 0.5}))
-      doc.roundedRect(110, 5, 90, 10,1,1, 'FD')
-      doc.roundedRect(110, 18, 90, 10,1,1, 'FD')
-      doc.roundedRect(110, 31, 65, 10,1,1, 'FD')
-      doc.restoreGraphicsState();
+        doc.saveGraphicsState();
+        doc.setFillColor(220, 220, 220)
+        doc.setGState(new doc.GState({opacity: 0.5}))
+        doc.roundedRect(10, 22, 65, 8,1,1, 'FD')
+        doc.roundedRect(10, 30, 65, 8,1,1, 'FD')
+        doc.roundedRect(10, 38, 65, 8,1,1, 'FD')
+        doc.restoreGraphicsState();
 
-      doc.setTextColor(0)
-      doc.setFontSize(14)
-      doc.text(producer.nombres==undefined?'':producer.nombres, 155, 12,'center');
-      doc.text(producer.apellidos==undefined?'':producer.apellidos, 155, 25,'center');
-      doc.text(producer.ci==undefined?'':producer.ci, 145, 38,'center');
-      doc.text(producer.id+'', 112, 47,'center');
+        doc.setTextColor(0)
+        doc.setFontSize(8)
+        let nombre=(producer.nombres==undefined||producer.nombres==null?'':producer.nombres)+" "+(producer.apellidos==undefined||producer.apellidos==null?'':producer.apellidos)
+        doc.text(nombre, 42, 28,'center');
+        doc.text(producer.ci==undefined||producer.ci==null?'':producer.ci, 42, 35,'center');
+        doc.text(producer.nunicipio==undefined||producer.nunicipio==null?'':producer.nunicipio, 42, 42,'center');
+        doc.text(producer.id+'', 112, 47,'center');
+        QRCode.toDataURL(this.urlfront+'/producerShow/'+producer.id)
+          .then(url => {
+            // console.log(url)
+            doc.addImage(url, 'png', 140, 20, 30, 30);
+              if (res.data!='') {
+                doc.addImage(res.data, 'png', 80, 20, 25, 25);
+              }
+            // window.open(doc.output('bloburl'), '_blank')
+            doc.save(`${producer.nombres} ${producer.apellidos}.pdf`);
+          })
+          .catch(err => {
+            console.error(err)
+          })
+        // var qrcode = new QRCode(document.getElementById("qr_code"), {
+        //   text: producer.url,
+        //   width: 128,
+        //   height: 128,
+        //   colorDark : "#000000",
+        //   colorLight : "#ffffff",
+        //   correctLevel : QRCode.CorrectLevel.H
+        // });
+        // setTimeout(() => {
+        //   let base64Image = $('#qr_code img').attr('src');
+        //   // console.log(producer.url)
+        //   if (producer.url!='' && producer.url!=null && producer.url!=undefined) {
+        //     doc.addImage(base64Image, 'png', 140, 20, 30, 30);
+        //   }
+        //   if (res.data!='') {
+        //     doc.addImage(res.data, 'png', 80, 20, 25, 25);
+        //   }
+        //
+        //   // console.log(producer)
+        //   window.open(doc.output('bloburl'), '_blank')
+        // }, 100);
+      })
 
-      var qrcode = new QRCode(document.getElementById("qr_code"), {
-        text: "Nombre:"+producer.nombres+" "+producer.apellidos+"\nCI:"+producer.ci,
-        width: 128,
-        height: 128,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-      });
-      setTimeout(() => {
-        let base64Image = $('#qr_code img').attr('src');
-        doc.addImage(base64Image, 'png', 180, 30, 22, 22);
-        // console.log(producer)
-        window.open(doc.output('bloburl'), '_blank')
-      }, 100);
     },
     userDelete(producer){
       this.$q.dialog({
@@ -378,7 +505,8 @@ export default {
       this.loading=true
       this.producer.user_id=this.store.user.id
       this.$api.post('producer',this.producer).then(res => {
-        this.producerGet()
+        // this.producerGet()
+        this.producers.unshift(res.data)
         this.loading=false
         this.producer={}
         this.producerDialog=false
@@ -387,10 +515,12 @@ export default {
         this.$q.notify({
           color: 'negative',
           textColor: 'white',
-          message: err.response.data.message,
+          message: "Nose inserto el dato"+err.response.data.message,
           position: 'top',
           icon: 'error'
         })
+      }).finally(()=>{
+        this.loading=false
       })
     },
     producerUpdate(){
@@ -420,6 +550,12 @@ export default {
         this.loading=false
         this.producers = res.data;
       });
+    },
+    onRejected (rejectedEntries) {
+      this.$q.notify({
+        type: 'negative',
+        message: `${rejectedEntries.length} el archivo paso las restricciones de validación`
+      })
     },
   },
 }
