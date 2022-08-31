@@ -86,7 +86,7 @@ module.exports = configure(function (ctx) {
           : 'https://www.bruiz.miganancia.cf/api/',
         API_FRONT: ctx.dev
           ? 'http://localhost:8080/#'
-          : 'https://www.miganancia.cf/#',
+          : 'https://www.ruiz.miganancia.cf/#',
       }
 
     },
