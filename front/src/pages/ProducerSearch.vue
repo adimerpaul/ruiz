@@ -13,13 +13,13 @@
       <template v-slot:top-right>
         <div class="row full-width">
           <div class="col-12 q-pa-xs">
-            <q-btn
-              class="full-width"
-              color="green"
-              icon-right="o_description"
-              :label="$q.screen.lt.md?'':'Descargar excel'"
-              no-caps
-            />
+<!--            <q-btn-->
+<!--              class="full-width"-->
+<!--              color="green"-->
+<!--              icon-right="o_description"-->
+<!--              :label="$q.screen.lt.md?'':'Descargar excel'"-->
+<!--              no-caps-->
+<!--            />-->
           </div>
         </div>
       </template>
@@ -49,7 +49,7 @@
         </q-td>
       </template>
     </q-table>
-    <pre>{{store.producerSearchs}}</pre>
+<!--    <pre>{{store.producerSearchs}}</pre>-->
   </div>
   <div class="col-12" v-else>
     <div  class="text-bold text-center text-h4 text-grey">
