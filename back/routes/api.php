@@ -27,5 +27,9 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('producerFilter',[\App\Http\Controllers\ProducerController::class,'producerFilter']);
     Route::post('consultaEdades',[\App\Http\Controllers\ConsultaController::class,'consultaEdades']);
     Route::post('consultaUsers',[\App\Http\Controllers\ConsultaController::class,'consultaUsers']);
+    Route::post('producerSearch',[\App\Http\Controllers\ProducerController::class,'producerSearch']);
+    Route::post('/upload', [\App\Http\Controllers\UploadController::class,'upload']);
+    Route::post('/base64', [\App\Http\Controllers\Base64Controller::class,'base64']);
+
     Route::resource('user',\App\Http\Controllers\UserController::class);
 });

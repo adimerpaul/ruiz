@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('producers', function (Blueprint $table) {
             $table->id();
             $table->string('nombres')->nullable();
+            $table->string('foto')->nullable();
+            $table->string('url')->nullable();
             $table->string('apellidos')->nullable();
             $table->string('ci')->nullable();
             $table->string('edad')->nullable();

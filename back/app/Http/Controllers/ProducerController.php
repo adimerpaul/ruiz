@@ -17,9 +17,9 @@ class ProducerController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->tipo=='ADMINISTRADOR'){
-            $producers = Producer::with('user')->get();
+            $producers = Producer::with('user')->orderBy('id','asc')->get();
         } else {
-            $producers = Producer::with('user')->where('user_id', $request->user()->id)->get();
+            $producers = Producer::with('user')->orderBy('id','asc')->where('user_id', $request->user()->id)->get();
         }
         return $producers;
     }
@@ -27,19 +27,26 @@ class ProducerController extends Controller
     {
         if ($request->user()->tipo=='ADMINISTRADOR'){
             if ($request->id==0){
-                $producers = Producer::with('user')
+                $producers = Producer::orderBy('id','desc')
                     ->whereDate('fecha', '>=', $request->fechaInicio)
                     ->whereDate('fecha', '<=', $request->fechaFin)
+                    ->with('user')
                     ->get();
             }else{
-                $producers = Producer::with('user')
+                $producers = Producer::orderBy('id','desc')
                     ->whereDate('fecha', '>=', $request->fechaInicio)
                     ->whereDate('fecha', '<=', $request->fechaFin)
                     ->where('user_id', $request->id)
+                    ->with('user')
                     ->get();
             }
         } else {
-            $producers = Producer::with('user')->where('user_id', $request->user()->id)->get();
+            $producers = Producer::with('user')
+                ->whereDate('fecha', '>=', $request->fechaInicio)
+                ->whereDate('fecha', '<=', $request->fechaFin)
+                ->orderBy('id','desc')
+                ->where('user_id', $request->user()->id)
+                ->get();
         }
         return $producers;
     }
@@ -53,6 +60,9 @@ class ProducerController extends Controller
     {
         //
     }
+    public function producerSearch(Request $request){
+        return Producer::whereRaw(" CONCAT(nombres,' ',apellidos) LIKE '%".$request->dato."%' OR ci like '%".$request->dato."%'")->with('user')->get();
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -64,7 +74,9 @@ class ProducerController extends Controller
     {
         $request['fecha']=date('Y-m-d');
         $request['hora']=date('H:i:s');
-        return Producer::create($request->all());
+        $producer = Producer::create($request->all());
+
+        return $producer->with('user')->find($producer->id);
     }
 
     /**
@@ -75,7 +87,7 @@ class ProducerController extends Controller
      */
     public function show(Producer $producer)
     {
-        //
+        return $producer;
     }
 
     /**

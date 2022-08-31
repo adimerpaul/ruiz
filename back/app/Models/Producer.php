@@ -12,6 +12,8 @@ class Producer extends Model
         'nombres',
         'apellidos',
         'ci',
+        'url',
+        'foto',
         'edad',
         'fechanNacimiento',
         'nroFamilia',
