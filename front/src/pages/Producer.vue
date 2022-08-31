@@ -450,7 +450,8 @@ export default {
                 doc.addImage(res.data, 'png', 80, 20, 25, 25);
               }
             // window.open(doc.output('bloburl'), '_blank')
-            doc.save(`${producer.nombres} ${producer.apellidos}.pdf`);
+            let time = new Date().getTime()
+            doc.save(`${producer.nombres} ${producer.apellidos} ${time}.pdf`);
           })
           .catch(err => {
             console.error(err)
