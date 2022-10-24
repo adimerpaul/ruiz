@@ -452,9 +452,10 @@ export default {
         doc.setTextColor(0)
         doc.setFontSize(8)
         let nombre=(producer.nombres==undefined||producer.nombres==null?'':producer.nombres)+" "+(producer.apellidos==undefined||producer.apellidos==null?'':producer.apellidos)
+        let municipio=(producer.municipio==undefined||producer.municipio==null?'':producer.municipio)
         doc.text(nombre, 42, 28,'center');
         doc.text(producer.ci==undefined||producer.ci==null?'':producer.ci, 42, 35,'center');
-        doc.text(producer.nunicipio==undefined||producer.nunicipio==null?'':producer.nunicipio, 42, 42,'center');
+        doc.text(municipio, 42, 42,'center');
         doc.text(producer.id+'', 112, 47,'center');
         QRCode.toDataURL(this.urlfront+'/producerShow/'+producer.id)
           .then(url => {
