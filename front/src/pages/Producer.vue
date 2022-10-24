@@ -417,7 +417,7 @@ export default {
       }
     },
     imprimirCredencial(producer){
-      // console.log(producer)
+      console.log(producer)
       this.loading=true
       this.$api.post('base64',{imagen:producer.foto}).then(res=>{
         this.loading=false
