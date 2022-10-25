@@ -94,6 +94,7 @@
           </q-td>
         </template>
       </q-table>
+      <pre>{{producers}}</pre>
     </div>
   </div>
   <q-dialog v-model="producerDialog" maximized>
