@@ -72,7 +72,8 @@ export default {
   data () {
     return {
       producer: {},
-      url:process.env.API
+      url:process.env.API,
+      urlfront:process.env.API_FRONT,
     }
   },
   created() {
