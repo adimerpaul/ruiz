@@ -40,7 +40,7 @@
                   <div class="col-12"><q-input disable dense outlined v-model="producer.mejorar" label="11 COMO CREE QUE PODRÍA MEJORAR SU PRODUCCIÓN" /></div>
 
                   <div class="col-12 text-center flex flex-center">
-                    <q-img :src="url+'../imagenes/'+producer.foto" style="width: 200px; height: 200px;" />
+                    <q-img v-if="producer.foto!=undefined" :src="url+'../imagenes/'+producer.foto" style="width: 200px; height: 200px;" />
                   </div>
                   <div class="col-12">
                     <q-btn class="full-width" label="Descargar Credencial" @click="imprimirCredencial(producer)" icon="credit_card" no-caps color="primary"/>
@@ -60,6 +60,13 @@
 </template>
 
 <script>
+import {date, exportFile, useQuasar} from 'quasar'
+import {jsPDF} from "jspdf";
+import {useCounterStore} from "stores/example-store";
+import $ from 'jquery'
+import QRCode from 'qrcode'
+import xlsx from "json-as-xlsx"
+
 export default {
   name: `ProducerShow`,
   data () {
