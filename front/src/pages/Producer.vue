@@ -94,7 +94,7 @@
           </q-td>
         </template>
       </q-table>
-      <pre>{{producers}}</pre>
+      <!--pre>{{producers}}</pre-->
     </div>
   </div>
   <q-dialog v-model="producerDialog" maximized>
@@ -399,14 +399,45 @@ export default {
   {
     sheet: "Productores",
     columns: [
-      { label: "User", value: "user" }, // Top level data
+      /*{ label: "User", value: "user" }, // Top level data
       { label: "Age", value: (row) => row.age + " years" }, // Custom format
       { label: "Phone", value: (row) => (row.more ? row.more.phone || "" : "") }, // Run functions
+      */
+      {label:"id",value:"id"},
+      {label:"nombres",value:"nombres"},
+      {label:"apellidos",value:"apellidos"},
+      {label:"ci",value:"ci"},
+      {label:"edad",value:"edad"},
+      {label:"nroFamilia",value:"nroFamilia"},
+      {label:"masculino",value:"masculino"},
+      {label:"femenino",value:"femenino"},
+      {label:"varones",value:"varones"},
+      {label:"mujeres",value:"mujeres"},
+      {label:"celular",value:"celular"},
+      {label:"provincia",value:"provincia"},
+      {label:"departamento",value:"departamento"},
+      {label:"municipio",value:"municipio"},
+      {label:"comunidad",value:"comunidad"},
+      {label:"superficie",value:"superficie"},
+      {label:"semilla",value:"semilla"},
+      {label:"abono",value:"abono"},
+      {label:"maquinaria",value:"maquinaria"},
+      {label:"riego",value:"riego"},
+      {label:"quinua",value:"quinua"},
+      {label:"asociacion",value:"asociacion"},
+      {label:"si",value:"si"},
+      {label:"no",value:"no"},
+      {label:"mejorar",value:"mejorar"},
+      {label:"fecha",value:"fecha"},
+      {label:"hora",value:"hora"},
+      {label:"user_id",value:"user_id"},
+      {label:"created_at",value:"created_at"},
+      {label:"updated_at",value:"updated_at"},
+      {label:"foto",value:"foto"},
+      {label:"url",value:"url"},
+      { label: "Usuario", value: (row) => (row.user ? row.user.name || "" : "") }
     ],
-    content: [
-      { user: "Andrea", age: 20, more: { phone: "11111111" } },
-      { user: "Luis", age: 21, more: { phone: "12345678" } },
-    ],
+    content: this.producers,
   },
   /*{
     sheet: "Children",
