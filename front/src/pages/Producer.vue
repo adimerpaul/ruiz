@@ -392,6 +392,7 @@ export default {
       });
     },
     exportTable () {
+      console.log(this.producers)
 
       let data = [
   {
