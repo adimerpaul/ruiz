@@ -395,7 +395,7 @@ export default {
 
       let data = [
   {
-    sheet: "Adults",
+    sheet: "Productores",
     columns: [
       { label: "User", value: "user" }, // Top level data
       { label: "Age", value: (row) => row.age + " years" }, // Custom format
@@ -406,7 +406,7 @@ export default {
       { user: "Luis", age: 21, more: { phone: "12345678" } },
     ],
   },
-  {
+  /*{
     sheet: "Children",
     columns: [
       { label: "User", value: "user" }, // Top level data
@@ -417,15 +417,15 @@ export default {
       { user: "Manuel", age: 16, more: { phone: 9999999900 } },
       { user: "Ana", age: 17, more: { phone: 8765432135 } },
     ],
-  },
+  },*/
 ]
 
 let settings = {
-  fileName: "MySpreadsheet", // Name of the resulting spreadsheet
-  extraLength: 3, // A bigger number means that columns will be wider
+  fileName: "Productores", // Name of the resulting spreadsheet
+  //extraLength: 3, // A bigger number means that columns will be wider
   writeMode: 'writeFile', // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
   writeOptions: {}, // Style options from https://github.com/SheetJS/sheetjs#writing-options
-  RTL: true, // Display the columns from right-to-left (the default value is false)
+  //RTL: true, // Display the columns from right-to-left (the default value is false)
 }
 
 xlsx(data, settings) // Will download the excel file
