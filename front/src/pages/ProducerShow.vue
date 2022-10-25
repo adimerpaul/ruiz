@@ -43,11 +43,11 @@
                     <q-img v-if="producer.foto!=undefined" :src="url+'../imagenes/'+producer.foto" style="width: 200px; height: 200px;" />
                   </div>
                   <div class="col-12">
-                    <q-btn class="full-width" label="Descargar Credencial" @click="imprimirCredencial(producer)" icon="credit_card" no-caps color="primary"/>
+                    <q-btn class="full-width" label="Imprimir" @click="imprimir" icon="print" no-caps color="primary"/>
                   </div>
-                  <div class="col-12">
+                  <!--div class="col-12">
                     <q-btn class="full-width" label="Descargar Credencial" icon-right="o_file_download" @click="excel" no-caps color="purple"/>
-                  </div>
+                  </div-->
                 </div>
               </q-card-section>
             </q-card>
@@ -152,6 +152,9 @@ let settings = {
 }
 
 xlsx(data, settings) // Will download the excel file
+    },
+    imprimir(){
+      window.print();
     },
     imprimirCredencial(producer){
       console.log(producer)
