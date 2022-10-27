@@ -122,7 +122,8 @@
           <div class="col-6"><q-input dense outlined v-model="producer.departamento" label="1 DEPARTAMENTO" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.municipio" label="2 MUNICIPIO" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.comunidad" label="3 COMUNIDAD" /></div>
-          <div class="col-6"><q-input dense outlined v-model="producer.superficie" label="4 SUPERFICIE CULTIVADA" /></div>
+<!--          <div class="col-6"><q-input dense outlined v-model="producer.superficie" label="4 SUPERFICIE CULTIVADA" /></div>-->
+          <div class="col-6"><q-select dense outlined v-model="producer.superficie" label="4 SUPERFICIE CULTIVADA" :options="hercatreas"/></div>
           <div class="col-6"><q-input dense outlined v-model="producer.semilla" label="5 SEMILLA UTILIZADA" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.abono" label="6 TIPO DE ABONO UTILIZADO" /></div>
           <div class="col-12"><q-input dense outlined v-model="producer.maquinaria" label="7 MAQUINARIA Y HERRAMIENTAS EMPLEADAS" /></div>
@@ -257,6 +258,7 @@ export default {
   name: `User`,
   data() {
     return {
+      hercatreas: [],
       url:process.env.API,
       urlfront:process.env.API_FRONT,
       fechaInicio: date.formatDate(new Date(),'YYYY-MM-DD'),
@@ -317,6 +319,11 @@ export default {
     }
   },
   created() {
+    this.hercatreas.push("otros")
+    for (let i = 0; i < 100; i++) {
+      this.hercatreas.push("hercatarea "+i)
+    }
+
     this.producerGet()
     this.userGet()
   },
