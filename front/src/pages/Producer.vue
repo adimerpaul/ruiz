@@ -321,7 +321,7 @@ export default {
   created() {
     this.hercatreas.push("otros")
     for (let i = 0; i < 100; i++) {
-      this.hercatreas.push("hercatarea "+i)
+      this.hercatreas.push("hectáreas "+i)
     }
 
     this.producerGet()
