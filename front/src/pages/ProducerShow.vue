@@ -43,7 +43,7 @@
                     <q-img v-if="producer.foto!=undefined" :src="url+'../imagenes/'+producer.foto" style="width: 200px; height: 200px;" />
                   </div>
                   <div class="col-12">
-                    <q-btn class="full-width" label="Imprimir" @click="imprimir" icon="print" no-caps color="primary"/>
+                    <q-btn class="full-width oculto-impresion" label="Imprimir" @click="imprimir" icon="print" no-caps color="primary"/>
                   </div>
                   <!--div class="col-12">
                     <q-btn class="full-width" label="Descargar Credencial" icon-right="o_file_download" @click="excel" no-caps color="purple"/>
@@ -80,6 +80,14 @@ export default {
     this.$q.loading.show()
     this.$api.get(`producer/${this.$route.params.id}`).then(res => {
       this.producer = res.data
+    }).catch(err=>{
+      this.$q.notify({
+        color: 'negative',
+        message: err.response.data.message,
+        icon: 'report_problem',
+        position: 'top'
+      })
+    }).finally(() => {
       this.$q.loading.hide()
     })
   },
@@ -241,5 +249,9 @@ xlsx(data, settings) // Will download the excel file
 </script>
 
 <style scoped>
-
+@media print{
+  .oculto-impresion, .oculto-impresion *{
+    display: none !important;
+  }
+}
 </style>

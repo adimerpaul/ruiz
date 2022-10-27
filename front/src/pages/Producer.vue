@@ -52,9 +52,17 @@
                 class="full-width"
                 color="purple"
                 icon-right="o_file_download"
-                :label="$q.screen.lt.md?'':'Descargar csv'"
+                :label="$q.screen.lt.md?'':'Excel'"
                 no-caps
                 @click="exportTable"
+              />
+              <q-btn
+                class="full-width"
+                color="secondary"
+                icon-right="o_file_download"
+                :label="$q.screen.lt.md?'':'Hectárea'"
+                no-caps
+                @click="exportHectarea"
               />
             </div>
           </div>
@@ -123,7 +131,8 @@
           <div class="col-6"><q-input dense outlined v-model="producer.municipio" label="2 MUNICIPIO" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.comunidad" label="3 COMUNIDAD" /></div>
 <!--          <div class="col-6"><q-input dense outlined v-model="producer.superficie" label="4 SUPERFICIE CULTIVADA" /></div>-->
-          <div class="col-6"><q-select dense outlined v-model="producer.superficie" label="4 SUPERFICIE CULTIVADA" :options="hercatreas"/></div>
+          <div class="col-6"><q-input type="number" step="0.01" dense outlined v-model="producer.superficie" label="4 SUPERFICIE CULTIVADA" /></div>
+<!--          <div class="col-6"><q-select dense outlined v-model="producer.superficie" label="4 SUPERFICIE CULTIVADA" :options="hercatreas"/></div>-->
           <div class="col-6"><q-input dense outlined v-model="producer.semilla" label="5 SEMILLA UTILIZADA" /></div>
           <div class="col-6"><q-input dense outlined v-model="producer.abono" label="6 TIPO DE ABONO UTILIZADO" /></div>
           <div class="col-12"><q-input dense outlined v-model="producer.maquinaria" label="7 MAQUINARIA Y HERRAMIENTAS EMPLEADAS" /></div>
@@ -398,6 +407,49 @@ export default {
         this.usersF = this.users
         this.user=this.users[0]
       });
+    },
+    exportHectarea(){
+      this.$q.loading.show()
+      this.$api.get('exportHectarea').then(res => {
+        let data = [
+          {
+            sheet: "Productores",
+            columns: [
+              /*{ label: "User", value: "user" }, // Top level data
+              { label: "Age", value: (row) => row.age + " years" }, // Custom format
+              { label: "Phone", value: (row) => (row.more ? row.more.phone || "" : "") }, // Run functions
+              */
+              {label:"hectareas",value:"hectareas"},
+              {label:"cantidad",value:"cantidad"},
+            ],
+            content: res.data,
+          },
+        ]
+
+        let settings = {
+          fileName: "Hectareas", // Name of the resulting spreadsheet
+          //extraLength: 3, // A bigger number means that columns will be wider
+          writeMode: 'writeFile', // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
+          writeOptions: {}, // Style options from https://github.com/SheetJS/sheetjs#writing-options
+          //RTL: true, // Display the columns from right-to-left (the default value is false)
+        }
+
+        xlsx(data, settings)
+
+        this.$q.notify({
+          message: 'Exportado',
+          color: 'positive',
+          icon: 'cloud_done'
+        })
+      }).catch(err=>{
+        this.$q.notify({
+          message: 'Error al exportar',
+          color: 'negative',
+          icon: 'cloud_done'
+        })
+      }).finally(()=>{
+        this.$q.loading.hide()
+      })
     },
     exportTable () {
       console.log(this.producers)

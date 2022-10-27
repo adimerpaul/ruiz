@@ -25,6 +25,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/updatePassword/{user}',[\App\Http\Controllers\UserController::class,'updatePassword']);
     Route::resource('producer',\App\Http\Controllers\ProducerController::class);
     Route::post('producerFilter',[\App\Http\Controllers\ProducerController::class,'producerFilter']);
+
+    Route::get('exportHectarea',[\App\Http\Controllers\ProducerController::class,'exportHectarea']);
     Route::post('consultaEdades',[\App\Http\Controllers\ConsultaController::class,'consultaEdades']);
     Route::post('consultaUsers',[\App\Http\Controllers\ConsultaController::class,'consultaUsers']);
     Route::post('producerSearch',[\App\Http\Controllers\ProducerController::class,'producerSearch']);

@@ -6,6 +6,7 @@ use App\Models\Producer;
 use App\Http\Requests\StoreProducerRequest;
 use App\Http\Requests\UpdateProducerRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProducerController extends Controller
 {
@@ -14,6 +15,10 @@ class ProducerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function exportHectarea(){
+        return DB::select("SELECT superficie hectareas,COUNT(superficie) cantidad FROM producers WHERE superficie is not null GROUP BY superficie;");
+    }
+
     public function index(Request $request)
     {
         if ($request->user()->tipo=='ADMINISTRADOR'){
